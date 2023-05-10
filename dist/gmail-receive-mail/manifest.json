@@ -1,0 +1,13 @@
+{
+	"manifest_version": 3,
+	"name": "Gmail Receive Mail Cleaner",
+	"version": "0.0.1",
+	"permissions": ["activeTab", "tabs"],
+	"host_permissions": ["https://mail.google.com/mail*"],
+	"content_scripts": [
+		{
+			"matches": ["https://mail.google.com/mail*"],
+			"js": ["content.js"]
+		}
+	]
+}

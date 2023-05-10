@@ -1,0 +1,13 @@
+{
+	"manifest_version": 3,
+	"name": "Prime Video History Cleaner",
+	"version": "0.0.1",
+	"permissions": ["activeTab", "tabs"],
+	"host_permissions": ["https://www.amazon.co.jp/gp/video/settings*"],
+	"content_scripts": [
+		{
+			"matches": ["https://www.amazon.co.jp/gp/video/settings*"],
+			"js": ["content.js"]
+		}
+	]
+}
