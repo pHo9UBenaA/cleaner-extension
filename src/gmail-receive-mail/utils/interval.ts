@@ -1,22 +1,31 @@
 import { LocalSetInterval } from '../types/interval';
 
-let _intervalId: NodeJS.Timer | undefined;
+// TODO
+class LocalInterval {
+	private _intervalId: number | undefined;
 
-export const localSetInterval = (param: LocalSetInterval) => {
-	if (_intervalId) {
-		return;
+	constructor() {}
+
+	get intervalId(): Readonly<number> | undefined {
+		return this._intervalId;
 	}
 
-	_intervalId = setInterval(param.callback, param.ms);
-};
+	public localSetInterval = (param: LocalSetInterval) => {
+		if (this._intervalId) {
+			return;
+		}
 
-export const localClearInterval = (): void => {
-	if (!_intervalId) {
-		return;
-	}
+		this._intervalId = setInterval(param.callback, param.ms);
+	};
 
-	clearInterval(_intervalId);
-	_intervalId = undefined;
-};
+	public localClearInterval = (): void => {
+		if (!this._intervalId) {
+			return;
+		}
 
-export const intervalId: Readonly<NodeJS.Timer> | undefined = structuredClone(_intervalId);
+		clearInterval(this._intervalId);
+		this._intervalId = undefined;
+	};
+}
+
+export const localInterval = new LocalInterval();

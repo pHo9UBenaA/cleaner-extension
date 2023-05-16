@@ -4,6 +4,9 @@
 	"version": "0.0.1",
 	"permissions": ["activeTab", "tabs", "contextMenus"],
 	"host_permissions": ["https://mail.google.com/mail*"],
+	"action": {
+		"default_popup": "popup.html"
+	},
 	"content_scripts": [
 		{
 			"matches": ["https://mail.google.com/mail*"],
