@@ -8,20 +8,20 @@ import {
 	getHandler,
 	getMailToBeDeleted,
 } from './get-element.js';
-import { localClearInterval } from '../utils/interval';
+import { localInterval } from '../utils/interval';
 import { localConfirm } from '../utils/confirm';
 import { AriaCheckedStatus } from '../constants/element';
 
 export const deleteNonStarredMails = (): void => {
 	const inboxHandler = getHandler();
 	if (!inboxHandler) {
-		localClearInterval();
+		localInterval.localClearInterval();
 		return;
 	}
 
 	const allSelectCheckbox = getAllSelectCheckbox(inboxHandler);
 	if (!allSelectCheckbox) {
-		localClearInterval();
+		localInterval.localClearInterval();
 		return;
 	}
 	// Memo: 動作見た感じ意味ないかもしれないけど一応
@@ -37,7 +37,7 @@ export const deleteNonStarredMails = (): void => {
 	// Memo: とりあえず一個ずつ消している
 	const mailToBeDeleted = getMailToBeDeleted();
 	if (!mailToBeDeleted || !mailToBeDeleted.length) {
-		localClearInterval();
+		localInterval.localClearInterval();
 		return;
 	}
 
@@ -49,7 +49,7 @@ const setIntervalArg: LocalSetInterval = {
 	ms: INTERVAL_TIME,
 };
 
-const confirm = localConfirm(setIntervalArg);
+const confirm = localConfirm.confirm(setIntervalArg);
 
 const deleteMail = (tableRows: HTMLTableRowElement[]): void => {
 	if (!deleteMail.length) {
@@ -59,7 +59,7 @@ const deleteMail = (tableRows: HTMLTableRowElement[]): void => {
 	const agree = env.CONFIRM_WHEN_DELETE === 'yes' ? confirm(MESSAGE.deleteConfirm) : true;
 	if (!agree) {
 		alert(MESSAGE.deleteRejected);
-		localClearInterval();
+		localInterval.localClearInterval();
 		return;
 	}
 

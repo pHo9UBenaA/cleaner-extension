@@ -2,7 +2,7 @@ import { deleteHistory } from './functions/delete-history';
 import { ClassName, ElementName, Text, Url } from './constants/element';
 
 {
-	let intervalId: NodeJS.Timer | undefined;
+	let intervalId: number | undefined;
 
 	const refreshInterval = (): void => {
 		clearInterval(intervalId);
@@ -37,7 +37,10 @@ import { ClassName, ElementName, Text, Url } from './constants/element';
 		};
 
 		const navigationTabs = document.getElementById(ClassName.navigation) as HTMLDivElement;
-		const config: MutationObserverInit = { attributes: true, subtree: true };
+		const config: MutationObserverInit = {
+			attributes: true,
+			subtree: true,
+		};
 		const observer = new MutationObserver(observeMutation);
 		observer.observe(navigationTabs, config);
 	};
