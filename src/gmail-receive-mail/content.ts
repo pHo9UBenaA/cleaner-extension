@@ -1,36 +1,44 @@
-import { MESSAGE } from './constants/message';
 import { INTERVAL_TIME } from './constants/interval';
-import { intervalId, localClearInterval, localSetInterval } from './utils/interval';
-import { localConfirm } from './utils/confirm';
+import { localInterval } from './utils/interval';
 import { deleteNonStarredMails } from './functions/delete-non-starred-mail';
 import { LocalSetInterval } from './types/interval';
+import { Message } from './models/message';
+import { localConfirm } from './utils/confirm';
+import { MESSAGE } from './constants/message';
 
 // Todo: 既読メールをスター付きに変更
-// Todo: スター無しを探しに行く（パラメータが見当たらないため受信メール内で遷移し続ける必要があるかも）
+// Todo: スター無しを探しに行く（クエリパラメータが見当たらないため受信メール内で遷移し続ける必要があるかも）
 {
+	let isStarted: boolean = false;
+
 	const setIntervalArg: LocalSetInterval = {
 		callback: deleteNonStarredMails,
 		ms: INTERVAL_TIME,
 	};
 
-	const confirm = localConfirm(setIntervalArg);
+	chrome.runtime.onMessage.addListener(
+		(
+			message: Message,
+			sender: chrome.runtime.MessageSender,
+			sendResponse: (response?: any) => void
+		) => {
+			if (!localConfirm.confirmation && !localInterval.intervalId) {
+				isStarted = false;
+			}
 
-	window.document.onkeydown = function (event) {
-		if (!event.shiftKey || event.key !== 'Enter') {
-			return;
-		}
+			if (message.action === 'start' && !isStarted) {
+				isStarted = true;
+				alert(MESSAGE.start);
+				localInterval.localSetInterval(setIntervalArg);
+				return;
+			}
 
-		const agree = intervalId
-			? confirm(MESSAGE.confirmSuspension)
-			: confirm(MESSAGE.confirmExecute);
-		if (!agree) {
-			return;
+			if (message.action === 'end' && isStarted) {
+				isStarted = false;
+				alert(MESSAGE.end);
+				localInterval.localClearInterval();
+				return;
+			}
 		}
-
-		if (intervalId) {
-			localClearInterval();
-			return;
-		}
-		localSetInterval(setIntervalArg);
-	};
+	);
 }
