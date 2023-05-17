@@ -3,19 +3,22 @@
 	<head>
 		<title>Gmail Receive Mail Cleaner</title>
 		<meta charset="UTF-8" />
-		<style>
-			body {
-				width: 200px;
-			}
-			button {
-				display: block;
-				margin-bottom: 10px;
-			}
-		</style>
+		<link rel="stylesheet" href="https://unpkg.com/chota@latest" />
 	</head>
 	<body>
-		<button id="startButton">Start</button>
-		<button id="endButton">End</button>
+		<div class="card">
+			<header>
+				<h4>Gmail Receive Mail Cleaner</h4>
+			</header>
+			<p>
+				Moves unstarred emails in the incoming mail to the trash. If the data to be deleted
+				is not on the current page, the task is terminated.
+			</p>
+			<footer class="is-left">
+				<button class="button primary" id="startButton">StartTask</button>
+				<button class="button" id="endButton">EndTask</button>
+			</footer>
+		</div>
 		<script src="./popup.js"></script>
 	</body>
 </html>
