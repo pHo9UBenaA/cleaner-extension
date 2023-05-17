@@ -6,10 +6,10 @@ export const ClassName = {
 	tableRowStarActive: 'T-KT-Jp',
 	tableRowCheckbox: 'oZ-x3',
 	tableRowDeleteButton: 'bru',
-} as const;
+} as const satisfies { [key: string]: string };
 
 export const AriaCheckedStatus = {
 	true: 'true',
 	false: 'false',
 	mixed: 'mixed',
-} as const;
+} as const satisfies { [key: string]: string };
