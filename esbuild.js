@@ -49,8 +49,8 @@ const envPlugin = {
 // copyプラグイン
 const copyStaticFiles = require('esbuild-copy-static-files');
 const copyStaticFilesPlugin = copyStaticFiles({
-	src: './src/gmail-receive-mail/assets',
-	dest: './dist/gmail-receive-mail',
+	src: `./${srcDirName}/gmail-receive-mail/assets`,
+	dest: `./${distDirName}/gmail-receive-mail`,
 	dereference: true,
 	errorOnExist: false,
 });
@@ -59,7 +59,7 @@ const copyStaticFilesPlugin = copyStaticFiles({
 const options = {
 	entryPoints,
 	outdir,
-	outbase: './src',
+	outbase: `./${srcDirName}`,
 	platform: 'browser',
 	external: [],
 	bundle: true,
