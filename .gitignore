@@ -1,6 +1,7 @@
 .DS_Store
 .env
 .pnpm-store
+dist
 node_modules
 dist/gmail-receive-mail/*
 dist/prime-video-history/**/*.js

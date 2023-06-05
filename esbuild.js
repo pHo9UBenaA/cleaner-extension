@@ -1,23 +1,5 @@
-// srcディレクトリとdistディレクトリのサブディレクトリが一致しているか確認
-const fs = require('fs');
-
 const srcDirName = 'src';
 const distDirName = 'dist';
-
-const srcSubDir = fs
-	.readdirSync(`./${srcDirName}`, { withFileTypes: true })
-	.filter((dirent) => dirent.isDirectory())
-	.map((dirent) => dirent.name);
-
-const distSubDir = fs
-	.readdirSync(`./${distDirName}`, { withFileTypes: true })
-	.filter((dirent) => dirent.isDirectory())
-	.map((dirent) => dirent.name);
-
-if (srcSubDir.length !== distSubDir.length || !srcSubDir.every((dir) => distSubDir.includes(dir))) {
-	console.error('Error: The subdirectories of src and dist directories do not match.');
-	process.exit(1);
-}
 
 // esbuildオプションのentryPointsとoutdirを作成
 const path = require('path');
@@ -48,9 +30,19 @@ const envPlugin = {
 
 // copyプラグイン
 const copyStaticFiles = require('esbuild-copy-static-files');
-const copyStaticFilesPlugin = copyStaticFiles({
-	src: `./${srcDirName}/gmail-receive-mail/assets`,
-	dest: `./${distDirName}/gmail-receive-mail`,
+
+const gmailReceiveMailDir = 'gmail-receive-mail';
+const copyGmailReceiveMailStaticFilesPlugin = copyStaticFiles({
+	src: `./${srcDirName}/${gmailReceiveMailDir}/assets`,
+	dest: `./${distDirName}/${gmailReceiveMailDir}`,
+	dereference: true,
+	errorOnExist: false,
+});
+
+const primeVideoHistoryDir = 'prime-video-history';
+const copyPrimeVideoHistoryStaticFilesPlugin = copyStaticFiles({
+	src: `./${srcDirName}/${primeVideoHistoryDir}/assets`,
+	dest: `./${distDirName}/${primeVideoHistoryDir}`,
 	dereference: true,
 	errorOnExist: false,
 });
@@ -64,7 +56,11 @@ const options = {
 	external: [],
 	bundle: true,
 	tsconfig: './tsconfig.json',
-	plugins: [envPlugin, copyStaticFilesPlugin],
+	plugins: [
+		envPlugin,
+		copyGmailReceiveMailStaticFilesPlugin,
+		copyPrimeVideoHistoryStaticFilesPlugin,
+	],
 };
 
 const { build } = require('esbuild');
